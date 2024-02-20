@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown, faSignOut } from '@fortawesome/free-solid-svg-icons'
 import ReactLoading from "react-loading";
+import { debounce } from 'lodash';
 
 const Main = () => {
 
@@ -29,7 +30,6 @@ const Main = () => {
 
     React.useEffect(() => {
         setSession(getUserSession())
-        console.log(session)
     }, [])
 
     React.useEffect(() => {
@@ -70,6 +70,11 @@ const Main = () => {
         setSelectedJob(j)
     }
 
+    const handleInputChange = debounce((value, setter) => {
+        console.log(value)
+        setter(value)
+    }, 500)
+
     const onSearch = async e => {
         e.preventDefault()
         setNotFound(false)
@@ -101,7 +106,9 @@ const Main = () => {
             .then(r => {
                 if(Array.isArray(r.data) && r.data.length) {
                     const data = r.data.filter(item => { return item != null })
-                    setJobs([...jobs, ...data])
+                    setJobs(prevState => [
+                        ...prevState, ...data
+                    ])
                     setAllowFetch(true)
                     setPage(page + 1)
                 }
@@ -154,9 +161,12 @@ const Main = () => {
                     <form
                         onSubmit={onSearch} 
                         className='filter'>
-                        <input 
+                        {/* <input 
                             onChange={e => setDescription(e.target.value)}
-                            placeholder='Filter by job title' />
+                            placeholder='Filter by job title' /> */}
+                        <input 
+                            onChange={e => handleInputChange(e.target.value, setDescription)}
+                            placeholder='Filter by job title or company' />
                         <input  
                             onChange={e => setLocation(e.target.value)}
                             placeholder='Filter by job location'/>
@@ -201,7 +211,7 @@ const Main = () => {
                                             <img
                                                 onError={e => e.target.src = 'https://cdn.iconscout.com/icon/free/png-256/free-broken-image-1782063-1513075.png'}
                                                 alt='logo' 
-                                                src={job.company_logo}>
+                                                src={job.company_log || 'https://cdn.iconscout.com/icon/free/png-256/free-broken-image-1782063-1513075.png'}>
                                             </img>
                                             <div className='job-card__detail'>
                                                 <strong>{ job.title }</strong>
@@ -230,12 +240,13 @@ const Main = () => {
                     </div>
                     <div className='job-display'>
                         <img src='https://s3-ap-northeast-1.amazonaws.com/media-storage-kalibrr/job-function-banners/IT_and_Software.png'/>
+                        {/* <div className='job-display__header'></div> */}
                         <div className='job-display__content'>
                             <div className='job-display__company-logo'>
                                 <img
                                     onError={e => e.target.src = 'https://cdn.iconscout.com/icon/free/png-256/free-broken-image-1782063-1513075.png'}
                                     alt='logo' 
-                                    src={s_job?.company_logo}>
+                                    src={s_job?.company_logo || 'https://cdn.iconscout.com/icon/free/png-256/free-broken-image-1782063-1513075.png'}>
                                 </img>
                             </div>
                             <div className='job-display__content__start'>

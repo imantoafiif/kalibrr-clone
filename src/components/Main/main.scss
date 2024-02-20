@@ -12,6 +12,7 @@
 }
 
 .jobs-list {
+    flex-grow: 1;
     width: 30%;
     display: flex;
     flex-direction: column;
@@ -79,6 +80,16 @@
         width: 100%;
         height: 240px;
         object-fit: cover;
+    }
+
+    &__header {
+        width: 100%;
+        height: 240px;
+        background: url('https://s3-ap-northeast-1.amazonaws.com/media-storage-kalibrr/job-function-banners/IT_and_Software.png');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
     }
 
     &__company-logo {
@@ -150,6 +161,10 @@
     h1 {
         margin: 0;
         padding: 0;
+    }
+
+    @media screen and (max-width: 1023px) {
+        display: none;
     }
 }
 
@@ -246,7 +261,7 @@ p {
     padding: 16px;
     display: flex;
     flex-direction: row;
-    gap: 20px;
+    gap: 12px;
 
     button {
         width: 150px;
@@ -267,6 +282,23 @@ p {
         font-weight: 700;
         font-size: 16px;
         cursor: pointer;
+    }
+
+    @media screen and (max-width: 1023px) {
+        display: flex;
+        flex-direction: column;
+
+        input {
+            flex-grow: 0;
+        }
+
+        label {
+            justify-content: flex-end;
+        }
+
+        button {
+            display: none;
+        }
     }
 }
 
