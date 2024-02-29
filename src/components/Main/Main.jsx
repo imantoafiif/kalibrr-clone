@@ -2,13 +2,14 @@ import React, { useRef } from 'react'
 import './main.scss'
 import { instance as axios } from '../../utils/axios'
 import parse from 'html-react-parser';
-import getUserSession from '../../utils/decode';
 import Protected from '../../layouts/Protected';
-import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown, faSignOut } from '@fortawesome/free-solid-svg-icons'
 import ReactLoading from "react-loading";
 import { debounce } from 'lodash';
+import { useDispatch, useSelector } from 'react-redux';
+import { destroyLocalSession } from '../../redux/reducers/sessionSlice';
+// import { selectSession } from '../../redux/reducers/sessionSlice';
 
 const Main = () => {
 
@@ -19,18 +20,13 @@ const Main = () => {
     const [location, setLocation] = React.useState('')
     const [full_time, setFulltimeFlag] = React.useState(false)
     const [notFound, setNotFound] = React.useState(false)
-    const [session, setSession] = React.useState(null)
     const [allowFetch, setAllowFetch] = React.useState(true)
     const [dispSubmenu, setDispSubmenu] = React.useState(false)
     const [isFetching, setIsFetching] = React.useState(false)
 
     const jobsDiv = useRef(null)
-
-    const navigate = useNavigate()
-
-    React.useEffect(() => {
-        setSession(getUserSession())
-    }, [])
+    const user = useSelector(state => state.session.user)
+    const dispatch = useDispatch()
 
     React.useEffect(() => {
         if(jobs.length == 0) {
@@ -125,8 +121,7 @@ const Main = () => {
     }
 
     const logout = () => {
-        localStorage.removeItem('user-session')
-        navigate("/login")
+        dispatch(destroyLocalSession())
     }
 
     return (
@@ -138,9 +133,9 @@ const Main = () => {
                         <div
                             onClick={() => setDispSubmenu(!dispSubmenu)} 
                             className='nav-container__navbar__end'>
-                            <img src={session?.picture}></img>
+                            <img src={user?.picture}></img>
                             <span>
-                                { session?.name }
+                                { user?.name }
                                 <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                             
@@ -190,7 +185,7 @@ const Main = () => {
                                     <p>Jobs curated for you</p> : (
                                     <>
                                         <p>Oops !</p>
-                                        <p>We don't have any jobs matching that search right now. However, we have a list of jobs that might interest you below</p>
+                                        <p>We don&apos;t have any jobs matching that search right now. However, we have a list of jobs that might interest you below</p>
                                     </>
                                 )
                             }

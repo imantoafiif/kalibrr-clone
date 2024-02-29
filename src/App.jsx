@@ -1,18 +1,17 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom"
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Main from "./components/Main/Main"
 import Login from "./components/Login/Login"
 
-const router = createBrowserRouter([
-    { path: '/', element: <Main/> },
-    { path: '/login', element: <Login/> },
-
-])
-
 const App = () => {
     return (
-        <div>
-            <RouterProvider router={router} />
-        </div>
+        <Router>
+            <div>
+                <Routes>
+                    <Route exact path="/" element={<Main/>} />
+                    <Route exact path="/login" element={<Login />} />
+                </Routes>
+            </div>
+        </Router>
     )
 }
 

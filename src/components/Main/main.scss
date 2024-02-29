@@ -23,10 +23,32 @@
         padding: 1rem;
         font-size: 18px;
         border-bottom: 1px solid #d3d3d3;
+        position: relative;
 
         & > p:nth-child(1) {
             font-weight: 700;
+            width: fit-content;
+
+            // &::after {
+            //     content: 'asdasa';
+            //     background: #4A5568;
+            //     color: white;
+            //     padding: 6px;
+            //     border-radius: 4px;
+            //     position: absolute;
+            //     top: 10px;
+            //     display: none;
+            //     font-weight: 500;
+            // }
         }
+
+        // & > p:nth-child(1):hover {
+        //     &::after {
+        //         display: initial;
+        //     }
+        // }
+
+        
     }
 
     &__curation {
