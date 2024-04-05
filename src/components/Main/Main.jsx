@@ -9,6 +9,7 @@ import ReactLoading from "react-loading";
 import { debounce } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import { destroyLocalSession } from '../../redux/reducers/sessionSlice';
+import useFetch from '../../hooks/useFetch';
 // import { selectSession } from '../../redux/reducers/sessionSlice';
 
 const Main = () => {
@@ -68,8 +69,9 @@ const Main = () => {
 
     const handleInputChange = debounce((value, setter) => {
         console.log(value)
+        // onSearch()
         setter(value)
-    }, 500)
+    }, 100)
 
     const onSearch = async e => {
         e.preventDefault()
